@@ -47,20 +47,31 @@ exports.findAll = async (req, res) => {
   }
 };
 
+
+// Função para remover uma imagem do MongoDB (banco de dados) e local(Aquivo Uploads do VsCode)
 exports.remove = async (req, res) => {
   try {
+    // Busca a imagem no MongoDB(Banco de dados), com a ID enviado
     const picture = await Picture.findById(req.params.id);
 
+    // Se a img. não for encontrado no MongoDB(Banco de dados)
     if (!picture) {
       return res.status(404).json({ message: "imagem não encontrada!" });
     }
 
+    // Remove o arquivo localmente (Arquivo Uploads)
     fs.unlinkSync(picture.scr);
 
-    await picture.remove();
+    // Remove a imagem do MongoDB(Banco de dados)
+    await Picture.deleteOne({ _id: req.params.id });
 
+    // await picture.remove();
+
+    // Retorna uma menssagem ao usuario 
     res.json({ message: "Imagem removida!" });
   } catch (error) {
+    console.error(error);
+    // Retorna erro se houver alguem problema
     res.status(500).json({ message: "Erro ao excluir imagem!" });
   }
 };

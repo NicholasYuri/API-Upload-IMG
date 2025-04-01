@@ -23,6 +23,3 @@ app.use("/pictures", pictureRouter);
 app.listen(port, () => {
     console.log(`O servidor executa na porta ${port}`);
 });
-
-
-// atualizar

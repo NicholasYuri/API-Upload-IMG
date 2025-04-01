@@ -1,1 +1,19 @@
-/node_modules
+# Arquivos de log
+logs
+*.log
+npm-debud.log
+
+# dados de tempo de excução
+pids
+*.pid
+*.seed
+
+# Diretórios de dependencias 
+node_modules/
+
+#Arquivos de build
+dist/
+build/
+
+# Variaveis de ambiente 
+.env

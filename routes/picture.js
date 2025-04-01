@@ -17,7 +17,7 @@ router.post("/", upload.single("file"), PictureController.create);  // o (/) ja 
 router.get("/", PictureController.findAll);
 
 // Definindo a rota de DELETE para apagar imagem
-router.delete(":id", PictureController.remove);
+router.delete("/:id", PictureController.remove);
 
 // Exportando o arquivo para utilizar no app.js
 module.exports = router;
