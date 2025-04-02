@@ -16,6 +16,18 @@ const port = process.env.PORT || 3000
 // Importa o roteador de imagens para gerenciar as rotas criadas 
 const pictureRouter = require("./routes/picture");
 
+// configuração de coors
+app.use((req, res, next) => {
+    // Permitindo qualquer origem req. para o servidor
+    res.header("Access-Control-Allow-Origin", "*");
+    // Permitindo acessar os metodos GET, POST, DELETE
+    res.header("Access-CControl-Methods", "GET, POST, DELETE");
+    // Permitindo que o cabeçalho Content-Type seja enviado no formato um corpo um cabeçalho uma imagem
+    res.header("Access-Control-Allow-Header", "Content-Type");
+    // Chama a rota de processamento
+    next();
+})
+
 // Define que todas as rotas são "localhost:3000/pictures"
 app.use("/pictures", pictureRouter);
 

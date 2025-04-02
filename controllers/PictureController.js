@@ -2,7 +2,7 @@
 const Picture = require("../models/Picture")
 
 // importa o módulo fs para interagir com o sistema de arquivos
-const fs = require("fs")
+// const fs = require("fs")
 
 // Função para criar uma nova imagem no banco de dados 
 exports.create = async (req, res) => {
@@ -15,10 +15,11 @@ exports.create = async (req, res) => {
     //  Obtem o arquivo da req. (Usado pelo Multer para fazer o Upload)
     const file = req.file;
 
-    // Cria uma nova instancia com nome e caminho do arquivo
+    // Cria uma nova instancia com nome e imagem 
     const picture = new Picture({
       name,
-      scr: file.path,
+      image: file.buffer,
+      contentType: file.mimetype,
     });
 
     // Salva a imagem no MongoDB
@@ -47,6 +48,27 @@ exports.findAll = async (req, res) => {
   }
 };
 
+exports.getImage = async (req, res) => {
+  try {
+    // buscando a imagem pelo id no Banco de dados 
+    const picture = await Picture.findById(req.params.id)
+
+    // Se a imagem não foi encontrada, retorna erro (404)
+    if (!picture) {
+      return res.status(400).json({ message: "Image não encontrada!" });
+    }
+
+    // Define o tipo da resposta para o tipo de imagem
+    res.set('Contente-Type', picture.contentType)
+
+    // Mostra a imagem na resposta
+    res.send(picture.image)
+  } catch (error) {
+    // Caso ocorra erro, retorna para o usuario
+    res.status(500).json({ message: "Erro ao buscar imagem!" });
+  }
+};
+
 
 // Função para remover uma imagem do MongoDB (banco de dados) e local(Aquivo Uploads do VsCode)
 exports.remove = async (req, res) => {
@@ -60,7 +82,7 @@ exports.remove = async (req, res) => {
     }
 
     // Remove o arquivo localmente (Arquivo Uploads)
-    fs.unlinkSync(picture.scr);
+    // fs.unlinkSync(picture.scr);
 
     // Remove a imagem do MongoDB(Banco de dados)
     await Picture.deleteOne({ _id: req.params.id });

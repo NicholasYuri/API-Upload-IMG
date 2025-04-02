@@ -13,9 +13,11 @@ const PictureController = require("../controllers/PictureController");
 // Definindo a rota POST para criar, e fazer upload da imagem
 router.post("/", upload.single("file"), PictureController.create);  // o (/) ja é um localhost/(Porta)
 
-// Definindoa rota GET para buscar todas as imagens do DB
+// Definindo rota GET para buscar todas as imagens do DB
 router.get("/", PictureController.findAll);
 
+// Definindo a rota GET para obter uma imagem especifa
+router.get("/:id/image", PictureController.getImage)
 // Definindo a rota de DELETE para apagar imagem
 router.delete("/:id", PictureController.remove);
 
